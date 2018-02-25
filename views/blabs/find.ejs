@@ -1,0 +1,76 @@
+<div class="container-fluid">
+  <div class="blah-blah"></div>
+  <div class="row flipInX">
+
+    <br/>
+    <br/>
+
+    <div class="col-md-6 col-md-offset-3 bg-white">
+      <form id="createBlab">
+        <div class="form-group">
+          <input id="blabber-upvote" name="upvotes" type="hidden" class="form-control"
+                 value="0">
+          <input id="blabber-email" name="email" type="hidden" class="form-control" value="<%= req.query.email %>">
+          <label for="blab-content">Hey, wanna write something stupid?</label>
+          <textarea name="text" id="blab-content" class="form-control" rows="3"></textarea>
+
+          <br/>
+
+          <div class="form-group">
+            <div class="">
+              <button type="submit" class="btn btn-success btn-block">Blab it!</button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <br/>
+  <br/>
+
+  <div class="row bounceInUp">
+    <div class="col-md-6 col-md-offset-3 bg-white">
+
+      <ul class="list-group">
+        <% for (var i = data.length - 1; i >= 0; i--) { %>
+        <li class="list-group-item">
+          <div class="media">
+            <div class="media-left">
+              <a href="/blabs/<%= data[i].id %>">
+                <img class="media-object"
+                     src="http://email2pic.herokuapp.com/gravatar/<%= data[i].email %>">
+              </a>
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading"><%= data[i].email %></h4>
+              <p>
+                <% if (req.query.email == data[i].email) { %>
+                <a href="#" class="deleteBlab" action="/blabs/destroy/<%= data[i].id %>">
+                  <i class="fa fa-trash-o ">&nbsp;</i>delete</a>
+                <span> · </span>
+                <% } %>
+                <a href="#" class="upvoteBlab"
+                          action="/blabs/update/<%= data[i].id %>?upvotes=<%= parseInt(data[i].upvotes || 0) + 1 %>">
+                  <i class="fa fa-arrow-up">&nbsp;</i>upvote (<%= (data[i].upvotes || 0) %>)</a>
+                <span> · </span>
+                <a target="_blank"
+                          href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwebdev-blabber.herokuapp.com%2Fblabs%2F<%= data[i].id %>&t=<%= data[i].text %>">
+                  <i class="fa fa-share">&nbsp;</i>share</a>
+                <span> · </span>
+                <a href="/blabs/<%= data[i].id %>">
+                  <i class="fa fa-clock-o ">&nbsp;</i><%= new Date(data[i].createdAt).toLocaleString() %></a>
+
+              </p>
+
+              <p><%= data[i].text %></p>
+            </div>
+          </div>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+
+</div>

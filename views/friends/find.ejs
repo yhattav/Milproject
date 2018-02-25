@@ -1,0 +1,206 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3"> <!-- Section for the create a new friend part --><!-- -->
+            </br>
+            <div class="bg-white">
+                <button class="btn btn-info btnToggle btn-block"><i class="fa fa-arrow-down toggler">&nbsp;</i> Create a new Friend! <i class="fa fa-arrow-down toggler">&nbsp;</i></button>
+                <div class="external">
+                    <form  id="friendCreationForm" class="createFriend">
+                        <div class="form-group">
+                            <input id="Friend-type" name="typeFriend" type="hidden" class="form-control" value="1">
+                            <label for="Name-Input">Use this Box to create a new friend</label>
+                            <textarea name="name" id="friend-name" class="form-control" rows="1" required placeholder="Enter your friend's name"></textarea>
+                            <label for="Date-Input">When did you last talk to him?</label>
+                            <input id="Friend-latest" name="latest" type="date" class="form-control" >
+                            <label for="Name-Input">What can you tell us about him?</label>
+                            <textarea name="info" id="friend-info" class="form-control" rows="2" placeholder="e.g. His wife's name is Ellie, His Dog's name is Rex"></textarea>
+                            <label for="Name-Input">group?</label>
+                            <!-- this places each group in a radio for sellection. assignes the id of the group to the new created friend -->
+                            <% for (var j = data.length - 1; j >= 0; j--) { %>
+                            <% if (data[j].typeGroup == 1) { %>
+                                </br>          
+                                <input type="radio" name="group" value="<%=data[j].id%>" checked><%=data[j].name %><br>
+                                
+           
+                            <% } %>
+                            <% } %>
+                                
+                            <div class="form-group">
+                                <div class="">
+                                <button type="submit" class="btn btn-success btn-block">Add New Friend!</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+              </div>
+        </div>
+        <div class="col-md-6"><!--the friends part, starts with the differant groups -->
+            <div class="row ">
+                </br>
+                <div class="col-md-12 col-md-offset-0 ">
+                    <div class="btn-group" role="group" aria-label="...">
+                    
+                    <button id="showAllGroups" type="button" class="btn btn-success" value="1">Sellect all</button>
+                    <% for (var i = data.length - 1; i >= 0; i--) { %>
+                    <% if (data[i].typeGroup == 1) { %>
+                    <button type="button" class="btn groupSelect btn-success" value="<%=data[i].id%>"><%=data[i].name%></button>
+
+                    <% } %>
+                    <% } %>
+                    &nbsp;
+                    
+                    </div>
+                    </br>
+                    </br>
+                     <div class="btn-group" role="group" aria-label="..."><!--buttons to change the order -->
+                        <button id="byAlphBet" class="btn btn-info">By Name</button>
+                        <button id="byProgress" class="btn btn-info">By Progress</button>
+                        <button id="byUrgency" class="btn btn-info">By Urgency</button>
+                    </div>
+                    </br>
+                    </br>
+                    <ul class="friendList list-group bounceInUp"><!--the list of friends that is on display -->
+                    <% for (var i = data.length - 1; i >= 0; i--) { %>
+                    <% if (data[i].typeFriend == 1) { %>
+                    <li class="oneFriendLine list-group-item animated slideInUp bg-white group<%=data[i].group%>"> <!--a single friend on the list -->
+                    <div class="media">
+                        <div class="media-body">
+                           
+                            <div class="row btnToggle">
+                                <div class="col-md-2">
+                                    <h4 class="media-heading friendName"><%= data[i].name %></h4>
+                                </div>
+                                <div class="col-md-10">
+                                                            <!-- the progress bars -->         
+                                    <div class="OuterSingleBar">
+                                        <div class="aProgressBar " id='progress<%= i%>'></div>
+                                    </div>      
+                                </div>
+                            </div>
+                            <div class="external">
+                                </br>
+                                <div class="btn-group" role="group" aria-label="wooooot">
+                                     <form id="deleteFriend" class="deleteFriend" action="/friends/destroy/<%= data[i].id %>">
+                                        <button type="button" class="btn btn-danger btnToggle checkDelete">Delete</button>
+
+                                                <button type="submit" class="btn btn-danger external"> <i class="fa fa-trash-o "></i></button>
+
+                                        </form>
+                                </div>
+                                </br></br>
+                                
+                            
+
+                            </div>
+                            <div class="row external">
+                                <form id="updateFriend" class="updateFriend" action="/friends/update/<%= data[i].id %>?update=<%= parseInt(data[i].latest || 0)  %>?update=<%= parseInt(data[i].deathTime || 0)  %>">
+                                    <div class="col-lg-4">    
+                                        
+                                            <label for="latest-Update">Update the date you last called:</label>
+
+                                          
+
+
+
+
+
+
+                                                <div class="input-group">
+                                                <input id='Update-latest<%= i%>' name="latest" type="date" class="form-control" value="<%=data[i].latest %>">
+                                                <span class="input-group-btn" >
+                                                    <button id='changeToday<%= i%>' class="btn btn-default changeToday" data-internalid='<%= i%>' type="button">Today!</button>
+                                                </span>
+                                                </div><!-- /input-group -->
+                                           
+
+
+
+
+                                            
+
+
+
+
+                                            <label for="UpdatedAT">Last updated at:</label></br>
+                                            <a href="/friends/<%= data[i].id %>"><i class="fa fa-clock-o ">&nbsp;</i><%= new Date(data[i].updatedAt).toLocaleString() %></a></br>
+                                            <p> In group:&nbsp;
+                                                <%for (var g = data.length - 1; g >= 0; g--) { %>
+                                                <% if (data[g].id == data[i].group) { %>
+                                                <%=data[g].name%>
+                                                <% } %>
+                                              <% } %>
+                                            </p>
+                                            <label id="progPercent<%= i%>" class="progPercent">1</label>%
+                                            
+                                            
+                                        
+                                    </div><!-- /.col-lg-4 -->
+                                    <div class="col-lg-7">
+                                        <label for="info-Update">Read and update your contact info:</label>
+                                        <textarea id="Update-info" name="info" type="text" class="form-control" rows="4" ><%=data[i].info %></textarea> </br>
+                                        <button type="submit" class="btn btn-success btn-block" >Update!</button>    
+                                        
+                                    </div><!-- /.col-lg-1 -->
+                                    <div class="col-lg-1">
+                                        
+                                    </div><!-- /.col-lg-7 -->
+                                </form>
+                        </div>
+                    </div>
+                    </li>
+                    </br>
+                    <% } %>
+                    <% } %>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-3"> 
+            </br>
+            <div class="bg-white">
+                <button class="btn btn-info btnToggle btn-block"><i class="fa fa-arrow-down toggler">&nbsp;</i> Create a new group! <i class="fa fa-arrow-down toggler">&nbsp;</i></button>
+                <div class="external">
+                    <form  class="createFriend">
+                        <div class="form-group">
+                            <input id="Group-type" name="typeGroup" type="hidden" class="form-control" value="1">
+                            <label for="Name-Input">Use this Box to create a new Group</label>
+                            <textarea name="name" id="group-name" class="form-control" rows="1" required placeholder="Enter the group name"></textarea>
+                            <label for="Name-Input">Time(days) untill you must call a member in this group</label>
+                            <input id="Group-deathtime" name="deathTime" type="number" class="form-control" value="90">
+                            <div class="form-group">
+                                <div class="">
+                                <button type="submit" class="btn btn-success btn-block">Add the New Group!</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+    
+    <label for="latest-Update">Update the Groups</label>
+    <ul class="list-group">
+        <% for (var j = data.length - 1; j >= 0; j--) { %>
+        <% if (data[j].typeGroup == 1) { %>
+        
+        <li class="list-group-item bg-white">
+            <form id="updateGroup" class="updateFriend" action="/friends/update/<%= data[j].id %>?update=<%= parseInt(data[j].name || 0)  %>?update=<%= parseInt(data[j].deathTime || 0)  %>">
+            <textarea name="name" id="group-name-update" class="form-control" rows="1" required><%=data[j].name %></textarea>
+            
+            <input id="group-deathTime-update" name="deathTime" type="number" class="form-control" value="<%=data[j].deathTime %>">
+            <button type="submit" class="btn btn-success btn-block" >Update!</button>    
+            </form>
+        </li>
+
+        <% } %>
+        <% } %>
+    </ul>
+                        
+
+                </div>
+
+              </div>   
+        </div>
+    </div><!-- rows -->
+</div><!--The first container Fluid -->

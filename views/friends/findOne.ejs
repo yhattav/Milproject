@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="page-header">
+        <h1>Friend</h1>
+    </div>
+    <ol class="breadcrumb">
+        <li><a href="/jThings">friends</a></li>
+        <li class="active"><%= data.name %></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form id="updateThing" action="/jThings/update/<%=data.id%>">
+                <div class="form-group" ac>
+                    <label for="nameInput">Name</label>
+                    <input name="name" type="text" class="form-control" id="nameInput" placeholder="name" value="<%=data.name%>">
+                </div>
+                
+                <div class="form-group" ac>
+                    <label for="nameInput">Latest</label>
+                    <input name="latest" type="date" class="form-control" id="latestInput" placeholder="latest date you called" value="<%=data.latest%>">
+                </div>
+                
+                <div class="form-group">
+                    <label>ID</label>
+                    <input name="id" type="text" class="form-control" value="<%=data.id%>" disabled>
+                </div>
+                                <div class="form-group">
+                    <label>GroupID</label>
+                    <input name="group" type="text" class="form-control" value="<%=data.group%>" disabled>
+                </div>
+                                <div class="form-group">
+                    <label>deathTime</label>
+                    <input name="deathTime" type="text" class="form-control" value="<%=data.deathTime%>" disabled>
+                </div>
+                 <div class="form-group">
+                    <label>typeGroup</label>
+                    <input name="typeGroup" type="number" class="form-control" value="<%=data.typeGroup%>" disabled>
+                </div>
+                 <div class="form-group">
+                    <label>typeFriend</label>
+                    <input name="typeFriend" type="number" class="form-control" value="<%=data.typeFriend%>" disabled>
+                </div>
+                <div class="form-group">
+                    <label>info</label>
+                    <input name="info" type="text" class="form-control" value="<%=data.infod%>" disabled>
+                </div>
+                <div class="form-group">
+                    <label>Created At</label>
+                    <input name="createdAt" type="text" class="form-control" value="<%=data.createdAt%>" disabled>
+                </div>
+                <div class="form-group">
+                    <label>Updated At</label>
+                    <input name="updatedAt" type="text" class="form-control" value="<%=data.updatedAt%>" disabled>
+                </div>
+                <button type="submit" class="btn btn-primary">Update</button>
+                <button id="deleteThing" action="/jThings/destroy/<%=data.id%>" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
